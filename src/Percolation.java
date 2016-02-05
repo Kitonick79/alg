@@ -5,12 +5,12 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    int[][] Grid; // Matrix to store state
-    WeightedQuickUnionUF GridUF; // Linear massive for Union-Find operations
-    public int size; // Size of Grid
+    int [][] Grid;
+    WeightedQuickUnionUF GridUF;
+    public int size;
 
 
-    public Percolation(int N) { // Constructor
+    public Percolation(int N) {
         size = N;
         Grid = new int[size][size];
         GridUF = new WeightedQuickUnionUF (size*size + 2); // 2 extra nodes above and bellow the matrix
@@ -35,37 +35,24 @@ public class Percolation {
     public void open(int i, int j){
         checkRange(i);
         checkRange(j);
-        int  i1 = convertGridIndex(i); // indices in Grid Matrix
-        int  j1 = convertGridIndex(j); // indices in Grid Matrix
-        int  GridUFPos = convertGridUFIndex(i,j); //Position in Matrix for Union-Find
+        int  i1 = convertGridIndex(i);
+        int  j1 = convertGridIndex(j);
+        int  GridUFPos = convertGridUFIndex(i,j);
 
         Grid[i1][j1] = 1; // both indexes starts from zero, one means site is open
 
-        if ( i > 1 && (Grid[i1 - 1][j1] != 0) ){
-            GridUF.union(GridUFPos, convertGridUFIndex(i - 1, j));
-            if (GridUF.connected(0, convertGridUFIndex(i - 1, j))){Grid[i1-1][j1] = 2;}
-        } //connect the site above
+        if ( i > 1 && (Grid[i1 - 1][j1] != 0) ){GridUF.union(GridUFPos, convertGridUFIndex(i - 1,j));} //connect the site above
 
-        if ( i < size && (Grid[i1 +1][j1] != 0) ){
-            GridUF.union(GridUFPos, convertGridUFIndex(i + 1, j));
-            if (GridUF.connected(0, convertGridUFIndex(i + 1,j))){Grid[i1 +1][j1] = 2;}
-        } //connect the site bellow
+        if ( i < size && (Grid[i1 +1][j1] != 0) ){GridUF.union(GridUFPos, convertGridUFIndex(i + 1, j));} //connect the site bellow
 
-        if ( j < size && (Grid[i1][j1 + 1] != 0) ){
-            GridUF.union(GridUFPos, convertGridUFIndex(i, j + 1));
-            if (GridUF.connected(0, convertGridUFIndex(i,j + 1))){Grid[i1][j1 + 1] = 2;}
-        } //connect the site to the right
+        if ( j < size && (Grid[i1][j1 + 1] != 0) ){GridUF.union(GridUFPos, convertGridUFIndex(i, j + 1));} //connect the site to the right
 
-        if ( j > 1 && (Grid[i1][j1 - 1] != 0) ){
-            GridUF.union(GridUFPos, convertGridUFIndex(i, j - 1));
-            if (GridUF.connected(0, convertGridUFIndex(i,j - 1))){Grid[i1][j1 - 1] = 2;}
-        } //connect the site to the left
+        if ( j > 1 && (Grid[i1][j1 - 1] != 0) ){GridUF.union(GridUFPos, convertGridUFIndex(i, j - 1));} //connect the site to the left
 
         if (i == 1){GridUF.union(GridUFPos, 0);}
 
         if (i == size){GridUF.union(GridUFPos, size*size + 1);}
 
-        if (GridUF.connected(0, convertGridUFIndex(i,j))){Grid[i1][j1] = 2;} // two means site is Full
     }
 
     public boolean isOpen(int i, int j){
@@ -78,14 +65,28 @@ public class Percolation {
         return true;
     }
 
-    public boolean isFull(int i, int j){
+    public boolean isFull(int i, int j) {
         checkRange(i);
         checkRange(j);
-        int  i1 = convertGridIndex(i);
-        int  j1 = convertGridIndex(j);
+        int i1 = convertGridIndex(i);
+        int j1 = convertGridIndex(j);
 
-        if (Grid[i1][j1] == 2){return true;}
-        else {return false;}
+        if (percolates()) {
+            if (Grid[i1][j1] == 2) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else {
+
+            if (GridUF.connected(0, convertGridUFIndex(i, j))) {
+                Grid[i1][j1] = 2;
+                return true;
+            }
+            else {return false;}
+
+        }
     }
 
     public boolean percolates () {
