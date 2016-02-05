@@ -8,13 +8,14 @@ public class Percolation {
     boolean [][] Grid;
     boolean [][] GridF;
     WeightedQuickUnionUF GridUF;
-    public int size;
+    private int size;
+    private boolean percolates;
 
 
     public Percolation(int N) {
         size = N;
         Grid = new boolean[size][size];
-        GridUF = new WeightedQuickUnionUF (size*size + 2); // 2 extra nodes above and bellow the matrix
+        GridUF = new WeightedQuickUnionUF (size*size + 1); // 2 extra nodes above and bellow the matrix
         GridF = new boolean[size][size];
         for (int i=0; i < N; i++){
             for (int j=0; j < N; j++){
@@ -54,7 +55,7 @@ public class Percolation {
 
         if (i == 1){GridUF.union(GridUFPos, 0);}
 
-        if (i == size){GridUF.union(GridUFPos, size*size + 1);}
+
 
     }
 
@@ -82,6 +83,9 @@ public class Percolation {
 //                }
 //            }
 //
+        if (i == size && GridUF.connected(0, convertGridUFIndex(i, j))){
+            percolates = true;
+        }
 
         return GridUF.connected(0, convertGridUFIndex(i, j));
     }
@@ -89,7 +93,7 @@ public class Percolation {
     public boolean percolates () {
 
 
-        return GridUF.connected(0, (size*size +1) );
+        return percolates;
     }
 
     public static void main(String[] args) {
