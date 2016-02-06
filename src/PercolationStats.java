@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Created by Admin on 2/6/2016.
  */
 public class PercolationStats {
-    Percolation Perc; // Stores percolation Grid
+    Percolation perc; // Stores percolation Grid
     int size;         // Size of the Grid
     int times;        // Number of experiments
     int[] openedNumber; // Number of opened sites for each experiment
@@ -18,20 +18,22 @@ public class PercolationStats {
     public PercolationStats(int N, int T){ // perform T independent experiments on an N-by-N grid
         size = N;
         times = T;
-        openedNumber = new int[T];
+        openedNumber = new int[times];
+        boolean test = false;
 
-        for (int i=0; i < T; i++) {
+        for (int i=0; i < times; i++) {
 
-            Percolation Perc = new Percolation(N);
+            perc = new Percolation(size);
 
-            while (!Perc.percolates()) { // run experiments until Grid  percolates
+            while (!test) { // run experiments until Grid  percolates
                 int RandomI = StdRandom.uniform(1, N + 1);
                 int RandomJ = StdRandom.uniform(1, N + 1);
-                if (!Perc.isOpen(RandomI, RandomJ) && !Perc.isFull(RandomI, RandomJ)) {
-                    Perc.open(RandomI, RandomJ); // open site chosen at Random
-                    PercolationVisualizer.draw(Perc, N);
+                if (!perc.isOpen(RandomI, RandomJ) && !perc.isFull(RandomI, RandomJ)) {
+                    perc.open(RandomI, RandomJ); // open site chosen at Random
+                    //PercolationVisualizer.draw(perc, N);
                     //StdDraw.show(DELAY);
                     openedNumber[i] += 1;  //increase number of opened sites
+                    test = perc.percolates();
                 }
             }
 
@@ -42,12 +44,12 @@ public class PercolationStats {
         //In in = new In(args[0]);      // input file
 
 
-        int N = 5;
-        int T = 2;
-//        while (!StdIn.hasNext()) {
-            N = StdIn.readInt();
-            T = StdIn.readInt();
-//        }
+        int N = 2;
+        int T = 1;
+////        while (!StdIn.hasNext()) {
+//            N = StdIn.readInt();
+//            T = StdIn.readInt();
+////        }
 
         PercolationStats PercStats = new PercolationStats(N, T);
         System.out.println(Arrays.toString(PercStats.openedNumber));
