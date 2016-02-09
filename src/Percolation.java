@@ -1,5 +1,8 @@
 /**
  * Created by Dmitrii_Miagkov on 1/30/2016.
+ *
+ * This tools models percolation of a Grid NxN size
+ *
  */
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
@@ -10,31 +13,55 @@ public class Percolation {
     WeightedQuickUnionUF GridUF;    // With bottom and opened sites
     private int size;               // size of a Grid along axis
 
-    public Percolation(int N) {
-        size = N;
-        Grid = new boolean[size][size];
-        GridUF = new WeightedQuickUnionUF (size*size + 2); // 2 extra nodes above and bellow the matrix
-        GridUFNC = new WeightedQuickUnionUF (size*size + 1); // 2 extra nodes above and bellow the matrix
+    public Percolation(int N) { // constructor
+        size = N;                                           //size of Grid
+        Grid = new boolean[size][size];                     // Array to track if site is blocked or opened
+        GridUF = new WeightedQuickUnionUF (size*size + 2); // An Array to be used by Union-Find algorithm
+        GridUFNC = new WeightedQuickUnionUF (size*size + 1); // To elimenate backwash
+
+        if (N < 0) throw new IllegalArgumentException("size of Grid must be positive");
 
         for (int i=0; i < N; i++){
             for (int j=0; j < N; j++){
-                Grid[i][j] = false; // zero means that site is blocked
+                Grid[i][j] = false; // site initialization
             }
         }
     }
 
+    /**
+     * Checks if parameters are within prescribed range
+     * @param i - index of site along any axis
+     */
     private void checkRange(int i){
         if (i <= 0 || i > size) throw new IndexOutOfBoundsException("row index i out of bounds");
     }
 
+    /**
+     * Converts index from 1 .. N range to 0 .. N-1
+     * @param i - index of site along any axis
+     * @return index for Grid
+     */
     private int convertGridIndex(int i){
         return i-1;
     }
 
+    /**
+     * Converts Grid index to 1D Array
+     *
+     * @param i - column in the Grid
+     * @param j - row in the Grid
+     * @return - index in the Array for Union-Find operations
+     */
     private int convertGridUFIndex(int i, int j) {
         return (i-1)*size + j;
     }
 
+    /**
+     * Opens a site at indexes. Unions it with neighbours;
+     *
+     * @param i - column in the Grid
+     * @param j - row in the Grid
+     */
     public void open(int i, int j){
         checkRange(i); //index check
         checkRange(j); //index check
@@ -75,6 +102,12 @@ public class Percolation {
 
     }
 
+    /**
+     * Checks if the site is open
+     * @param i - column
+     * @param j - row
+     * @return
+     */
     public boolean isOpen(int i, int j){
         checkRange(i);
         checkRange(j);
@@ -82,6 +115,12 @@ public class Percolation {
         return Grid[convertGridIndex(i)][convertGridIndex(j)];
     }
 
+    /**
+     * Checks if the site is Full
+     * @param i - column
+     * @param j - row
+     * @return
+     */
     public boolean isFull(int i, int j) {
         checkRange(i);
         checkRange(j);
@@ -89,17 +128,13 @@ public class Percolation {
         return GridUFNC.connected(0, convertGridUFIndex(i, j)); // check if the node at (i, j) is connected to top
     }
 
+    /**
+     * Checks if the system percolates
+     * @return
+     */
     public boolean percolates () {
 
         return GridUF.connected(0, size*size + 1); // check if top and bottom are connected
     }
 
-    public static void main(String[] args) {
-
-        Percolation Test = new Percolation(3);
-        Test.open(1,1);
-        Test.open(2,1);
-        Test.open(3,1);
-        System.out.println(Test.percolates());
-    }
 }
