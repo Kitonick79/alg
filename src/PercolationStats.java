@@ -4,12 +4,11 @@ import edu.princeton.cs.algs4.StdStats;
 
 /**
  * Created by Miagkov Dmitrii  on 2/6/2016.
- *
+ * <p>
  * This is the main class for statistical analysis of percolation of grid,
  * it takes two parameters:
  * N - dimension of a Grid
  * T - number of experiments
- *
  */
 public class PercolationStats {
     private Percolation perc;       // Stores percolation Grid
@@ -22,7 +21,8 @@ public class PercolationStats {
         times = T; // initialization of number of experiments
         openedFrac = new double[times]; // setting of array's dimension
 
-        if (size <= 0 || times <= 0) throw  new IllegalMonitorStateException("Size and/or number of experiments are less or equal to zero");
+        if (size <= 0 || times <= 0)
+            throw new IllegalMonitorStateException("Size and/or number of experiments// are less or equal to zero");
 
         for (int i = 0; i < times; i++) {
 
@@ -33,7 +33,7 @@ public class PercolationStats {
                 int RandomJ = StdRandom.uniform(1, N+1);
                 if (!perc.isOpen(RandomI, RandomJ) && !perc.isFull(RandomI, RandomJ)) {
                     perc.open(RandomI, RandomJ); // open site chosen at Random
-                    openedFrac[i] += 1/((double)size*(double) size);  //increase number of opened sites
+                    openedFrac[i] += 1 / ((double) size * (double) size);  //increase number of opened sites
                 }
             }
 
@@ -66,10 +66,11 @@ public class PercolationStats {
         int T = StdIn.readInt();
 
         PercolationStats PercStats = new PercolationStats(N, T);
-       // System.out.println(Arrays.toString(PercStats.openedNumber));
-        System.out.println("mean = " + Double.toString(PercStats.mean()));
-        System.out.println("stddev = " + Double.toString(PercStats.stddev()));
-        System.out.println("95% confidence interval = " + Double.toString(PercStats.confidenceLo()) + ", " + Double.toString(PercStats.confidenceHi()) );
+        // System.out.println(Arrays.toString(PercStats.openedNumber));
+        System.out.println("mean = "+Double.toString(PercStats.mean()));
+        System.out.println("stddev = "+Double.toString(PercStats.stddev()));
+        System.out.println("95% confidence interval = " + Double.toString(PercStats.confidenceLo()) + ", "
+                + Double.toString(PercStats.confidenceHi()));
 
 
     }
