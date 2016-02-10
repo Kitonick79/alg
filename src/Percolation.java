@@ -14,12 +14,13 @@ public class Percolation {
     private int size;               // size of a grid along axis
 
     public Percolation(int N) { // constructor
+
+        if (N <= 0) throw new IllegalArgumentException("size of grid must be positive");
+
         size = N;                                           //size of grid
         grid = new boolean[size][size];                     // Array to track if site is blocked or opened
         gridUF = new WeightedQuickUnionUF(size*size + 2); // An Array to be used by Union-Find algorithm
         gridUFNC = new WeightedQuickUnionUF(size*size + 1); // To elimenate backwash
-
-        if (N < 0) throw new IllegalArgumentException("size of grid must be positive");
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -138,4 +139,8 @@ public class Percolation {
         return gridUF.connected(0, size*size + 1); // check if top and bottom are connected
     }
 
+    public static void main(String[] args) {
+        Percolation perc = new Percolation(-1);
+        perc.open(1, 2);
+    }
 }
