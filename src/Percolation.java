@@ -8,9 +8,9 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    boolean [][] Grid;              // holds status open/bloched of a site. Models percolation Grid
-    WeightedQuickUnionUF GridUFNC;  // To hold the object without top and bottom sites
-    WeightedQuickUnionUF GridUF;    // With bottom and opened sites
+    private boolean [][] Grid;              // holds status open/bloched of a site. Models percolation Grid
+    private WeightedQuickUnionUF GridUFNC;  // To hold the object without top and bottom sites
+    private WeightedQuickUnionUF GridUF;    // With bottom and opened sites
     private int size;               // size of a Grid along axis
 
     public Percolation(int N) { // constructor

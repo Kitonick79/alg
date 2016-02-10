@@ -12,10 +12,10 @@ import edu.princeton.cs.algs4.StdStats;
  *
  */
 public class PercolationStats {
-    Percolation perc;       // Stores percolation Grid
-    int size;               // Size of the Grid
-    int times;              // Number of experiments
-    double[] openedFrac;    // Fraction of opened sites is each experiment
+    private Percolation perc;       // Stores percolation Grid
+    private int size;               // Size of the Grid
+    private int times;              // Number of experiments
+    private double[] openedFrac;    // Fraction of opened sites is each experiment
 
     public PercolationStats(int N, int T) { // perform T independent experiments on an N-by-N grid
         size = N; //initialization of Grid size
