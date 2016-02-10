@@ -47,17 +47,17 @@ public class PercolationStats {
         return StdStats.mean(openedFrac);
     }
 
-    public double stddev() {// sample standard deviation of percolation threshold
+    public double stddev() { // sample standard deviation of percolation threshold
 
         return StdStats.stddev(openedFrac);
     }
 
-    public double confidenceLo() {// low  endpoint of 95% confidence interval
+    public double confidenceLo() { // low  endpoint of 95% confidence interval
 
         return (mean()- 1.96 * stddev() / Math.sqrt(times));
     }
 
-    public double confidenceHi() {// high endpoint of 95% confidence interval
+    public double confidenceHi() { // high endpoint of 95% confidence interval
 
         return (mean() + 1.96 * stddev() / Math.sqrt(times));
     }
